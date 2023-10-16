@@ -1,0 +1,9 @@
+1. vytvorit class Game
+2.
+ - Pote vytvorit class Human - dedicnost a udelat getBoundingBox
+                        - class Player
+                        - class Princess
+ - A nasledne Enemy - dedicnost
+                        - class Kong
+                        - class Enemytype1
+                        - class enemyType2
