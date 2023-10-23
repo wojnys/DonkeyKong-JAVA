@@ -1,10 +1,7 @@
 package lab;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
@@ -18,10 +15,17 @@ public class Player extends Human {
     private boolean moveLeft = true;
     private boolean moveBottom = true;  // for goiing down by letter
     private boolean moveUp = true;  // is just for climbing bya  letters
-    private boolean isJumping = false;
-    private double jumpSpeed = 10.0;
-    private double gravity = 0.5;
+    private double jumpSpeed = 40.0;
+    private double gravity = 3;
     private boolean applyGravity = true;
+
+    private boolean isOnPlatform = false;
+
+    private TranslateTransition jumpAnimation;
+
+    private boolean jumpAnimationRunning = false;
+    private boolean pressedSpace = false;
+
 
     public Player(Game game, Point2D position, Point2D size, Point2D velocity, String imagePath) {
         super(game, position, size, velocity, imagePath);
@@ -31,64 +35,66 @@ public class Player extends Human {
     }
 
     public void applyGravity() {
-        if(moveBottom && this.applyGravity) {
-            this.position = this.position.add(0, 1.5);
-            System.out.println(this.position.getY());
+        if (moveBottom && this.applyGravity) {
+            this.position = this.position.add(0, this.gravity);
+        }
+    }
+
+    public void jump() {
+        if (jumpAnimationRunning) {
+            // Duration of jump
+            Duration jumpDuration = Duration.seconds(0.35);
+
+            // Create a Timeline for the jump animation
+            Timeline jumpTimeline = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> {
+                    // This code executes at the beginning of the animation
+                    this.position = this.position.subtract(0, 9);
+                }),
+                new KeyFrame(jumpDuration, e -> {
+                    // This code executes after setted time,
+                    jumpAnimationRunning = false;
+                    this.pressedSpace = false;
+                })
+            );
+            jumpTimeline.setCycleCount(1); // Play the animation once
+            jumpTimeline.play();
         }
     }
 
     public void movementPlayer(Set<KeyCode> pressedKeys) {
         if (pressedKeys.contains(KeyCode.D)) {
-            if(this.moveRight) {
+            if (this.moveRight) {
                 this.velocity = new Point2D(Math.abs(this.speedX), 0);
             }
-            if(!this.moveRight) {
+            if (!this.moveRight) {
                 this.velocity = new Point2D(0, 0);
             }
-        } if (pressedKeys.contains(KeyCode.A)) {
-            if(this.moveLeft) {
+        }
+        if (pressedKeys.contains(KeyCode.A)) {
+            if (this.moveLeft) {
                 this.velocity = new Point2D(this.speedX * (-1), 0);
             }
-            if(!this.moveLeft) {
+            if (!this.moveLeft) {
                 this.velocity = new Point2D(0, 0);
             }
-        } if (pressedKeys.contains(KeyCode.S)) {
-            if(this.moveBottom) {
-                this.velocity = new Point2D(0, Math.abs(this.speedY));
-            }
-            if(!this.moveBottom) {
+        }
+        if (!pressedSpace && this.isOnPlatform) {
+            if (pressedKeys.contains(KeyCode.SPACE)) {
                 this.velocity = new Point2D(0, 0);
-            }
-        }if (pressedKeys.contains(KeyCode.W)) {
-            this.velocity = new Point2D( 0, Math.abs(this.speedY) * (-1));
-        }
-
-        if(pressedKeys.contains(KeyCode.SPACE)) {
-            if (!isJumping) {
-                this.position = this.position.add(0, -jumpSpeed);
-                isJumping = true;
-                Duration duration = Duration.seconds(3); // Adjust the duration as needed
-                turnOffGravityForDuration(duration);
+                this.pressedSpace = true;
             }
         }
-    }
-
-    public void turnOffGravityForDuration(Duration duration) {
-        // Disable gravity
-        applyGravity = false;
-
-        // Create a timeline to re-enable gravity after a specific duration
-        Timeline timeline = new Timeline(
-                new KeyFrame(duration, e -> applyGravity = true)
-        );
-        timeline.setCycleCount(1);
-        timeline.play();
+        if (pressedSpace) {
+            this.jumpAnimationRunning = true;
+            this.jump();
+        }
     }
 
     public void update(double deltaT, Set<KeyCode> pressedKeys) {
         applyGravity();
         // Check for collisions with platforms
-        boolean bottomCollision = false;
+        this.isOnPlatform = false;
         for (Platform platform : game.getPlatforms()) {
             if (platform.intersects(this.rightBoundingBox()) && pressedKeys.contains(KeyCode.D)) {
                 this.moveRight = false;
@@ -98,11 +104,10 @@ public class Player extends Human {
             }
             if (platform.intersects(this.bottomBoundingBox())) {
                 this.moveBottom = false;
-                bottomCollision = true;
-                this.isJumping = false;
+                this.isOnPlatform = true;
             }
         }
-        if(!bottomCollision) {
+        if (!this.isOnPlatform) {
             this.moveBottom = true;
         }
 
@@ -121,7 +126,7 @@ public class Player extends Human {
         // Handle player movement
         this.movementPlayer(pressedKeys);
         // Player is moving only when Keys are pressed
-        if (!pressedKeys.isEmpty() ) {
+        if (!pressedKeys.isEmpty()) {
             this.position = this.position.add(this.velocity.getX() * deltaT, this.velocity.getY() * deltaT);
         }
     }

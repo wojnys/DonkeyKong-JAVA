@@ -1,10 +1,13 @@
 package lab;
 
+import javafx.animation.Animation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,7 @@ public class Human {
     protected Point2D size;
     protected Point2D velocity;
     protected Image image;
+
 
     public Human(Game game, Point2D position, Point2D size, Point2D velocity, String imagePath) {
         this.game = game;
@@ -36,7 +40,7 @@ public class Human {
                 this.position.getX() + this.size.getX() / 2,  // Adjust the X coordinate to the middle of the player
                 this.position.getY(),
                 this.size.getX() / 2,  // Use half of the player's width
-                this.size.getY() -  2 // because of collision with ground
+                this.size.getY() -  5 // because of collision with ground
         );
     }
 
@@ -45,7 +49,7 @@ public class Human {
                 this.position.getX(),  // X coordinate remains the same as the player's left side
                 this.position.getY(),
                 this.size.getX() / 2,  // Use half of the player's width
-                this.size.getY() - 2  // because of collision with ground
+                this.size.getY() - 5  // because of collision with ground
         );
     }
     public Rectangle2D bottomBoundingBox() {

@@ -1,16 +1,21 @@
 package lab;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.security.Key;
 import java.util.HashSet;
@@ -34,12 +39,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+
             //Construct a main window with a canvas.
             Group root = new Group();
             canvas = new Canvas(1200, 800);
             root.getChildren().add(canvas);
             Scene scene = new Scene(root, 1200, 800);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
             primaryStage.setScene(scene);
             primaryStage.resizableProperty().set(false);
             primaryStage.setTitle("Java 1 - 1th laboratory");
