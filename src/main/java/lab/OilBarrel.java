@@ -2,17 +2,15 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
-public class Ladder extends Item implements Collisionable {
+public class OilBarrel extends Item implements Collisionable{
     private Point2D position;
     private Point2D size;
-
-    public Ladder(Point2D position, Point2D size, String image) {
-        super(position, size, image);
+    public OilBarrel(Point2D position, Point2D size, String imagePath) {
+        super(position, size, imagePath);
         this.position = position;
         this.size = size;
+
     }
 
     public Rectangle2D getBoundingBox() {

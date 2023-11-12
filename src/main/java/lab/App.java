@@ -2,10 +2,12 @@ package lab;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -27,29 +29,26 @@ public class App extends Application {
     private AnimationTimer timer;
     private final Set<KeyCode> pressedKeys = new HashSet<>();
 
+    private GameStartMenuController startGameCntroller;
+
     @Override
     public void start(Stage primaryStage) {
         try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("GameStartMenu.fxml")
+            );
+            BorderPane pane = loader.load(); // load a .fxml file
 
-            //Construct a main window with a canvas.
-            Group root = new Group();
-            canvas = new Canvas(1200, 800);
-            root.getChildren().add(canvas);
-            Scene scene = new Scene(root, 1200, 800);
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
+            Scene scene = new Scene(pane);
+            scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.resizableProperty().set(false);
-            primaryStage.setTitle("Java 1 - 1th laboratory");
+            primaryStage.setTitle("Java - Donkey Kong");
             primaryStage.show();
-
-            scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
-            scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
-
+            startGameCntroller = loader.getController(); // game controller from scene builder app
+            startGameCntroller.startGame();
             //Exit program when main window is closed
             primaryStage.setOnCloseRequest(this::exitProgram);
-            timer = new DrawingThread(canvas,pressedKeys);
-            timer.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
