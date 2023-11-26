@@ -5,7 +5,7 @@ import java.io.IOException;
 public class EmptyGameListener implements GameListener {
 
     @Override
-    public void stateChanged(int score) {
+    public void stateChanged(int score, int hp) {
     }
 
     @Override
@@ -13,7 +13,7 @@ public class EmptyGameListener implements GameListener {
     }
 
     @Override
-    public void gameStart() throws IOException {
+    public void gameWin() throws IOException {
 
     }
 

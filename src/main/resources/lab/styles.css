@@ -1,7 +1,5 @@
-@font-face {
-    font-family: 'Cambay Devanagari';
-    src: url('./font/Athletic.ttf');
-}
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans&family=Bitter:ital,wght@1,800&family=Dosis:wght@200&family=Open+Sans:ital,wght@1,500&family=Oswald:wght@300;400&family=Ubuntu&display=swap');
+
 .donkey-kong-button {
     -fx-background-color: #FFD700; /* Yellow background color */
     -fx-text-fill: #000; /* Black text color */
@@ -10,16 +8,19 @@
     -fx-border-color: #8B0000; /* Dark red border color */
     -fx-max-width: 400px;
     -fx-min-width: 400px;
-    -fx-font-family: "Cambay Devanagari";
-    src: url('./font/Athletic.ttf');
+    -fx-font-family: 'Bitter', serif;
+    -fx-cursor: pointer;
 }
 .donkey-kong-button:hover {
     -fx-background-color:#8B0000 ;
     -fx-text-fill: white;
 }
 .title {
+    -fx-font-family: 'Bitter', serif;
     -fx-text-fill: white;
     -fx-padding:50px 0px ;
+    -fx-alignment: center;
+    -fx-font-size: 50px;
 }
 
 
@@ -28,4 +29,30 @@
     -fx-background-size: cover;
     -fx-background-color: black;
     -fx-text-fill: white;
+}
+
+.V-box-info {
+    -fx-background-color: black;
+    -fx-font-family: 'Bitter', serif;
+    -fx-alignment: center-right;
+    -fx-font-size: 20px;
+}
+.score-label-displayer {
+    -fx-alignment: center-right;
+    -fx-text-fill: white;
+    -fx-padding: 5px 30px;
+}
+.hp-label-displayer {
+    -fx-alignment: center-right;
+    -fx-padding: 5px 30px;
+    -fx-text-fill: white;
+}
+
+
+.score-label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+    -fx-font-family: 'Bitter', serif;
 }

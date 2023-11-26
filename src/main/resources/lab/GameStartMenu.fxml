@@ -8,9 +8,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <BorderPane styleClass="donkey-kong-background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab.GameStartMenuController">
    <top>
-      <Label prefHeight="44.0" prefWidth="249.0" styleClass="title" text="DONKEY KONG" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Label prefHeight="44.0" prefWidth="400.0" styleClass="title" text="DONKEY KONG" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>

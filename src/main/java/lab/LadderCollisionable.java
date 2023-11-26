@@ -1,5 +1,6 @@
 package lab;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 public interface LadderCollisionable {
@@ -8,8 +9,10 @@ public interface LadderCollisionable {
      void climbingStopped();
 
      boolean intersectsWithLadder(Ladder ladder);
-     boolean intersectsWithLadderForGoingDown(Ladder ladder);
 
       void goingDownAllowed();
       void goingDownStopped();
+
+      Point2D getPosition();
+      Point2D getSize();
 }

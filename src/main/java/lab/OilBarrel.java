@@ -2,11 +2,12 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 
 public class OilBarrel extends Item implements Collisionable{
     private Point2D position;
     private Point2D size;
-    public OilBarrel(Point2D position, Point2D size, String imagePath) {
+    public OilBarrel(Point2D position, Point2D size, Image imagePath) {
         super(position, size, imagePath);
         this.position = position;
         this.size = size;
@@ -46,6 +47,14 @@ public class OilBarrel extends Item implements Collisionable{
                 this.size.getX(),
                 this.size.getY()
         );
+    }
+
+    public boolean hasCollision(Collisionable obj) {
+        if(obj instanceof Enemy) {
+            System.out.println("HP -1");
+        }
+
+        return false;
     }
 
     public boolean intersects(Rectangle2D other) {

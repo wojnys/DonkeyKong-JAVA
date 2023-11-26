@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 import java.util.Set;
@@ -15,12 +16,12 @@ public abstract class Human implements DrawableUpdatable, Collisionable {
     protected Point2D velocity;
     protected Image image;
 
-    public Human(Game game, Point2D position, Point2D size, Point2D velocity, String imagePath) {
+    public Human(Game game, Point2D position, Point2D size, Point2D velocity, Image imagePath) {
         this.game = game;
         this.position = position;
         this.size = size;
         this.velocity = velocity;
-        this.image = new Image(getClass().getResource(imagePath).toExternalForm());
+        this.image = imagePath;
     }
 
     public void draw(GraphicsContext gc) {

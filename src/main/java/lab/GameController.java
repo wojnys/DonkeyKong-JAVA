@@ -1,73 +1,122 @@
 package lab;
 
+import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.util.Pair;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
+
 
 public class GameController {
     private Game game;
     @FXML
     private Canvas canvas; // get canvas from scene builder app
     private AnimationTimer animationTimer;
+    private AnimationTimer enemySpawnTimer;
+
+    @FXML
+    private Label scoreLabel;
+    @FXML
+    private Label hpLabel;
+
+    private int scorePlayer;
+    private int hpPlayer;
 
     private Set<KeyCode> pressedKeys = new HashSet<>();
 
-
-    public GameController(){
+    public GameController() {
     }
 
     public void startGame() throws IOException {
         canvas.getScene().setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         canvas.getScene().setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
-        this.game = new Game( canvas.getWidth(), canvas.getHeight(),pressedKeys );
+
+        this.game = new Game(canvas.getWidth(), canvas.getHeight(), pressedKeys);
+        this.game.setGameListener(new GameListener() {
+            @Override
+            public void gameWin() throws IOException {
+                stopGame();
+                enemySpawnTimer.stop();
+                GameController.this.switchScene("GameWinMenu.fxml", true);
+                System.out.println("You passed a level BRO");
+                SaveLoadFile.saveScores("PLAYER", scorePlayer);
+            }
+
+            @Override
+            public void stateChanged(int score, int hp) {
+                System.out.println(score);
+                scorePlayer = score;
+                scoreLabel.setText("Score: " + scorePlayer);
+                hpPlayer = hp;
+                hpLabel.setText("HP: " + hpPlayer);
+            }
+
+            @Override
+            public void gameOver() throws IOException {
+                stopGame();
+                enemySpawnTimer.stop();
+                GameController.this.switchScene("GameOverMenu.fxml", false);
+                System.out.println("GAME OVER BRO");
+                SaveLoadFile.saveScores("PLAYER", scorePlayer);
+            }
+        });
+
 
         animationTimer = new DrawingThread(canvas, pressedKeys, this.game);
         animationTimer.start();
 
+        scoreLabel.setText("Score: " + "0"); // budu nacitat z JSONU
+        hpLabel.setText("HP: " + "3");           // budu nacitat z JSONU
+
         System.out.println("game was started");
         this.startGeneratingEnemies(this.game);
+
     }
+
     public void startGeneratingEnemies(Game game) {
-        AnimationTimer enemySpawnTimer = new AnimationTimer() {
+        enemySpawnTimer = new AnimationTimer() {
             long lastSpawnTime = 0;
 
             @Override
             public void handle(long now) {
-                if (now - lastSpawnTime >= 5_000_000_000L) { // 5 seconds in nanoseconds
+                if (now - lastSpawnTime >= 2_000_000_000L) { // 5 seconds in nanoseconds
                     game.spawnEnemies();
                     lastSpawnTime = now;
                 }
             }
         };
+
         enemySpawnTimer.start();
     }
 
-    public void switchScene() throws IOException {
-        animationTimer.stop();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameOverMenu.fxml"));
+    public void switchScene(String XMLFile, boolean levelPassed) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(XMLFile));
         BorderPane pane = loader.load(); // Load a .fxml file
 
         // load a new controller
-        GameOverMenuController gameOverMenuController = loader.getController();
+        if (!levelPassed) {
+            GameOverMenuController gameOverMenuController = loader.getController();
+            gameOverMenuController.displayStats(scorePlayer);
+        } else {
+            GameWinMenuController gameWinMenuController = loader.getController();
+            gameWinMenuController.displayStats(scorePlayer);
+        }
 
         // Get the stage associated with the existing window
         Stage existingStage = (Stage) canvas.getScene().getWindow();
         Scene newScene = new Scene(pane);
+        newScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         existingStage.setScene(newScene);
         existingStage.show();
     }
@@ -75,7 +124,6 @@ public class GameController {
     public void stopGame() {
         animationTimer.stop();
     }
-
 }
 
 

@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.Set;
@@ -32,6 +33,8 @@ public class DrawingThread extends AnimationTimer {
 		double deltaT = (now - lasttime) / 1e9;
 		if (deltaT >= 1./FPS) {
 			gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+			gc.setFill(Color.BLACK);
 			try {
 				this.game.draw(gc);
 			} catch (IOException e) {
@@ -39,7 +42,11 @@ public class DrawingThread extends AnimationTimer {
 			}
 			if (lasttime > 0) {
 				//time are in nanoseconds and method simulate expects seconds
-				this.game.update(deltaT, pressedKeys);
+				try {
+					this.game.update(deltaT, pressedKeys);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 			this.lasttime = now;
 		}

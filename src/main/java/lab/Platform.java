@@ -9,11 +9,12 @@ public class Platform extends Item implements Collisionable {
     private Point2D position;
     private Point2D size;
 
-    public Platform(Point2D position, Point2D size, String imagePaht) {
+    public Platform(Point2D position, Point2D size, Image imagePaht) {
         super(position, size, imagePaht);
         this.position = position;
         this.size = size;
     }
+
 
     public Rectangle2D getBoundingBox() {
         return new Rectangle2D(position.getX(), position.getY(), size.getX(), size.getY());

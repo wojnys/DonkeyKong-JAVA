@@ -3,11 +3,18 @@ package lab;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class GameStartMenuController {
 
@@ -29,9 +36,9 @@ public class GameStartMenuController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
         BorderPane pane = loader.load(); // Load a .fxml file
 
-        // Get the stage associated with the existing window
         Stage existingStage = (Stage) canvas.getScene().getWindow();
         Scene newScene = new Scene(pane);
+        newScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         existingStage.setScene(newScene);
         existingStage.show();
 
