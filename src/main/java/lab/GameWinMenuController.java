@@ -34,8 +34,24 @@ public class GameWinMenuController {
     }
 
     @FXML
-    public void nextLevel() {
+    public void nextLevel() throws IOException {
+        int LEVEL_NUMBER_INCREASED = GameStartMenuController.getLevel();
+        LEVEL_NUMBER_INCREASED++; // Increase Level value
+        GameStartMenuController.setLevel(LEVEL_NUMBER_INCREASED);
 
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+        BorderPane pane = loader.load(); // Load a .fxml file
+
+        Stage existingStage = (Stage) canvas.getScene().getWindow();
+        Scene newScene = new Scene(pane);
+        newScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        existingStage.setScene(newScene);
+        existingStage.show();
+
+        // load a new controller
+        GameController gameController = loader.getController();
+        gameController.startGame(LEVEL_NUMBER_INCREASED);
     }
     @FXML
     public void startNewGame() throws IOException {

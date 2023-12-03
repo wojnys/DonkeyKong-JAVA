@@ -3,6 +3,7 @@ module lab01 {
     requires javafx.fxml;
     requires javafx.base;
     requires com.google.gson;
+    requires json.simple;
     opens lab to javafx.fxml, com.google.gson;
     exports lab;
 }

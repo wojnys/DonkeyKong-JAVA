@@ -17,51 +17,26 @@ import java.util.stream.Collectors;
 public class Game {
     private final double width;
     private final double height;
+    private boolean restartGameAllowed = false;
     private Set<KeyCode> pressedKeys;
 
     private List<DrawableUpdatable> objects;
+    private LoadJsonData loadJsonData = null;
 
     private GameListener gameListener = new EmptyGameListener();
     private final List<DrawableUpdatable> found = new ArrayList<DrawableUpdatable>();
 
-    Image playerImage = new Image(getClass().getResourceAsStream("/lab/mario-cropped.gif"));
-    Image kongImage = new Image(getClass().getResourceAsStream("/lab/kong.gif"));
-    Image princessImage = new Image(getClass().getResourceAsStream("/lab/princess.gif"));
     Image enemyImage = new Image(getClass().getResourceAsStream("/lab/enemy-1.gif"));
-    Image platformImage = new Image(getClass().getResourceAsStream("/lab/platform.png"));
-    Image ladderImage = new Image(getClass().getResourceAsStream("/lab/ladder.png"));
-    Image oilBarrelImage = new Image(getClass().getResourceAsStream("/lab/oilBarrel.gif"));
-    Image hammerImage = new Image(getClass().getResourceAsStream("/lab/hammer.png"));
 
+    public Game(double width, double height, Set<KeyCode> pressedKeys, int LEVEL_NUMBER) throws IOException {
+        objects = new ArrayList<>();
 
-    public Game(double width, double height, Set<KeyCode> pressedKeys) throws IOException {
+        //load objects for current LEVEL FROM JSON FILE
+        this.loadJsonData = new LoadJsonData(this);
+        objects = this.loadJsonData.loadLevel(LEVEL_NUMBER);
+
         this.width = width;
         this.height = height;
-
-        objects = new ArrayList<>();
-        objects.add(new Platform(new Point2D(0, 195), new Point2D(this.getWidth() - 100, 30), platformImage));
-        objects.add(new Platform(new Point2D(100, 330), new Point2D(this.getWidth() - 100, 30), platformImage));
-        objects.add(new Platform(new Point2D(0, 465), new Point2D(this.getWidth() - 100, 30), platformImage));
-        objects.add(new Platform(new Point2D(0, 600), new Point2D(this.getWidth(), 30), platformImage));
-//        objects.add(new Platform(new Point2D(300, 400), new Point2D(30, 500), "/lab/platform.png"));
-        //ladder
-        objects.add(new Ladder(new Point2D(250, 330), new Point2D(20, 135), ladderImage));
-        objects.add(new Ladder(new Point2D(650, 330), new Point2D(20, 135), ladderImage));
-        objects.add(new Ladder(new Point2D(840, 465), new Point2D(20, 135), ladderImage));
-        objects.add(new Ladder(new Point2D(800, 195), new Point2D(20, 135), ladderImage));
-        objects.add(new Ladder(new Point2D(500, 195), new Point2D(20, 135), ladderImage));
-        objects.add(new Ladder(new Point2D(300, 70), new Point2D(20, 125), ladderImage));
-        //princess platform
-        objects.add(new Platform(new Point2D(0, 70), new Point2D(400, 30), platformImage));
-        objects.add(new Princess(this, new Point2D(100, 0), new Point2D(60, 60), new Point2D(100, 60), princessImage));
-        //player
-        objects.add(new Player(this, new Point2D(100, height - 45 - 40), new Point2D(33, 45), new Point2D(150, 80), playerImage));
-        // load barel which change enemy desing and movement
-        objects.add(new OilBarrel(new Point2D(0, this.getHeight() - 60 - 30), new Point2D(50, 60), oilBarrelImage));
-
-        objects.add(new Kong(this, new Point2D(0, 195 - 60), new Point2D(50, 60), new Point2D(50, 60), kongImage));
-
-        objects.add(new Hammer(new Point2D(350, 390), new Point2D(60, 70), hammerImage));
 
         this.gameListener.stateChanged(0, 3);
     }
@@ -74,7 +49,6 @@ public class Game {
     }
 
     public void update(double deltaT, Set<KeyCode> pressedKeys) throws IOException {
-        boolean restartGameAllowed = false;
         boolean winGame = false;
         for (DrawableUpdatable object : this.objects) {
             object.update(deltaT, pressedKeys);
@@ -110,7 +84,7 @@ public class Game {
                         this.gameListener.stateChanged(player.getScore(), player.getHp() - 1);
                         winGame = true;
                     }
-                    if(playerCollisionalObject instanceof Hammer hammer) {
+                    if (playerCollisionalObject instanceof Hammer hammer) {
                         System.out.println("COLLISION WITH HAMMER");
                         assert player != null;
                         Duration hammerVisibilityDuration = Duration.seconds(7);
@@ -196,10 +170,13 @@ public class Game {
             this.gameListener.gameWin();
         }
         objects.removeAll(found);
+        found.clear();
     }
 
     public void spawnEnemies() {
-        objects.add(new Enemy(this, new Point2D(50, 100), new Point2D(25, 25), new Point2D(160, 60), enemyImage));
+        Random rand = new Random();
+        int randomValue = rand.nextBoolean() ? 1 : -1;
+        objects.add(new Enemy(this, new Point2D(Kong.getKongPosition().getX(), Kong.getKongPosition().getY()), new Point2D(25, 25), new Point2D(160 * randomValue, 60), enemyImage));
         System.out.println("new object was created");
     }
 
@@ -232,8 +209,8 @@ public class Game {
                 player.restart();
             }
         }
-        objects.removeAll(found);
-        objects.add(new Hammer(new Point2D(350, 390), new Point2D(60, 70), hammerImage));
+        objects.removeAll(found);  // Remove all founded objects
+        this.restartGameAllowed = false;
 
     }
 

@@ -10,13 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.*;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
-
 
 public class GameController {
     private Game game;
@@ -35,14 +32,17 @@ public class GameController {
 
     private Set<KeyCode> pressedKeys = new HashSet<>();
 
+    private int LEVEL_NUMBER;
+
     public GameController() {
     }
 
-    public void startGame() throws IOException {
+    public void startGame(int level) throws IOException {
+        LEVEL_NUMBER = level;
         canvas.getScene().setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         canvas.getScene().setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
-        this.game = new Game(canvas.getWidth(), canvas.getHeight(), pressedKeys);
+        this.game = new Game(canvas.getWidth(), canvas.getHeight(), pressedKeys, LEVEL_NUMBER);
         this.game.setGameListener(new GameListener() {
             @Override
             public void gameWin() throws IOException {
@@ -72,7 +72,6 @@ public class GameController {
             }
         });
 
-
         animationTimer = new DrawingThread(canvas, pressedKeys, this.game);
         animationTimer.start();
 
@@ -81,16 +80,16 @@ public class GameController {
 
         System.out.println("game was started");
         this.startGeneratingEnemies(this.game);
-
     }
 
     public void startGeneratingEnemies(Game game) {
+        long spawnTime = 4_000_000_000L / (long) GameStartMenuController.getLevel();
         enemySpawnTimer = new AnimationTimer() {
             long lastSpawnTime = 0;
 
             @Override
             public void handle(long now) {
-                if (now - lastSpawnTime >= 2_000_000_000L) { // 5 seconds in nanoseconds
+                if (now - lastSpawnTime >= spawnTime) { //  In nanoseconds
                     game.spawnEnemies();
                     lastSpawnTime = now;
                 }

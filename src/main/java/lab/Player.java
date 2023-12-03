@@ -110,7 +110,7 @@ public class Player extends Human implements LadderCollisionable{
             }
         }
         // Jump logic
-        if (!pressedSpace && this.isOnPlatform && !this.moveUp) {
+        if (!pressedSpace && this.isOnPlatform) {
             if (pressedKeys.contains(KeyCode.SPACE)) {
                 this.velocity = new Point2D(0, 0);
                 this.pressedSpace = true;
@@ -165,12 +165,6 @@ public class Player extends Human implements LadderCollisionable{
         }
     }
 
-    public Point2D getPosition() {
-        return this.position;
-    }
-    public Point2D getSize() {
-        return this.size;
-    }
     public int getHp() {return this.hp;}
     public void restart(){
         this.hp -= 1;

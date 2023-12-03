@@ -46,20 +46,11 @@ public class Enemy extends Human implements LadderCollisionable, BarrelCollision
         return this.choseLadder;
     }
 
-    public Point2D getPosition() {
-        return this.position;
-    }
-
-    public Point2D getSize() {
-        return this.size;
-    }
-
     public void climbingAllowed() {
     }
 
     public void climbingStopped() {
     }
-
 
     @Override
     public Rectangle2D getBoundingBox() {
@@ -123,9 +114,5 @@ public class Enemy extends Human implements LadderCollisionable, BarrelCollision
 
     public boolean intersectsWithBarrel(OilBarrel oilBarrel) {
         return this.getBoundingBox().intersects(oilBarrel.getBoundingBox());
-    }
-
-    public void updateEnemySkill() {
-        System.out.println("enemy was update - he can go up");
     }
 }

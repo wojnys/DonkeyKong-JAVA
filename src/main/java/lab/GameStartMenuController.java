@@ -23,8 +23,17 @@ public class GameStartMenuController {
     private Game game;
     private AnimationTimer animationTimer;
 
+    private static int LEVEL_NUMBER = 1; // Starting Level
+
     public void startGame() {
 
+    }
+
+    public static int getLevel() {
+        return LEVEL_NUMBER;
+    }
+    public static void setLevel(int increasedLevel) {
+         LEVEL_NUMBER = increasedLevel;
     }
 
     @FXML
@@ -44,7 +53,7 @@ public class GameStartMenuController {
 
         // load a new controller
         GameController gameController = loader.getController();
-        gameController.startGame();
+        gameController.startGame(LEVEL_NUMBER);
     }
 
 

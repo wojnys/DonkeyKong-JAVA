@@ -20,7 +20,13 @@ public abstract class Item implements DrawableUpdatable, Collisionable {
         this.image = imagePath;
     }
 
-    @Override
+    public Point2D getSize() {
+        return this.size;
+    }
+    public Point2D getPosition() {
+        return this.position;
+    }
+
     public void draw(GraphicsContext gc) {
         gc.drawImage(this.image, position.getX(), position.getY(), this.size.getX(), this.size.getY());
     }

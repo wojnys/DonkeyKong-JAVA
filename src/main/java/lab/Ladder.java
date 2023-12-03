@@ -14,10 +14,10 @@ public class Ladder extends Item  {
         this.position = position;
         this.size = size;
     }
-    public Point2D getSize() {
-        return this.size;
-    }
-    public Point2D getPosition() {
-        return this.position;
-    }
+//    public Point2D getSize() {
+//        return this.size;
+//    }
+//    public Point2D getPosition() {
+//        return this.position;
+//    }
 }

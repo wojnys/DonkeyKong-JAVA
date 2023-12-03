@@ -1,0 +1,63 @@
+{
+  "platforms": [
+    {"x": 0, "y": 195, "width": 900, "height": 30},
+    {"x": 100, "y": 330, "width": 900, "height": 30},
+    {"x": 0, "y": 465, "width": 900, "height": 30},
+    {"x": 0, "y": 600, "width": 1000, "height": 30},
+    {"x": 0, "y": 70, "width": 400, "height": 30}
+  ],
+  "ladders": [
+    {"x": 250, "y": 330, "width": 20, "height": 135},
+    {"x": 650, "y": 330, "width": 20, "height": 135},
+    {"x": 840, "y": 465, "width": 20, "height": 135},
+    {"x": 800, "y": 195, "width": 20, "height": 135},
+    {"x": 500, "y": 195, "width": 20, "height": 135},
+    {"x": 300, "y": 70, "width": 20, "height": 125}
+  ],
+  "princess": [
+    {
+      "x": 110,
+      "y": 20,
+      "width": 60,
+      "height": 60,
+      "velocityX": 50,
+      "velocityY": 500
+    }
+  ],
+  "player": [
+    {
+      "x": 1,
+      "y": 500,
+      "width": 33,
+      "height": 45,
+      "velocityX":150,
+      "velocityY": 100
+    }
+  ],
+  "oilBarrel": [
+    {
+      "x":0 ,
+      "y": 540,
+      "width": 50,
+      "height": 60
+    }
+  ],
+  "kong": [
+    {
+      "x": 100,
+      "y": 135,
+      "width": 50,
+      "height": 60,
+      "velocityX": 50,
+      "velocityY": 60
+    }
+  ],
+  "hammer": [
+    {
+      "x": 350,
+      "y": 390,
+      "width": 60,
+      "height": 70
+    }
+  ]
+}

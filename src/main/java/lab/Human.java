@@ -24,6 +24,12 @@ public abstract class Human implements DrawableUpdatable, Collisionable {
         this.image = imagePath;
     }
 
+    public Point2D getPosition() {
+        return this.position;
+    }
+    public Point2D getSize() {
+        return this.size;
+    }
     public void draw(GraphicsContext gc) {
         gc.drawImage(this.image, position.getX(), position.getY(), this.size.getX(), this.size.getY());
     }
@@ -58,6 +64,7 @@ public abstract class Human implements DrawableUpdatable, Collisionable {
                 this.size.getY()
         );
     }
+
     public Rectangle2D topBoundingBox() {
         return new Rectangle2D(
                 this.position.getX(),
