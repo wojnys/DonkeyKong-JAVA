@@ -28,7 +28,7 @@ public class App extends Application {
 
     private Canvas canvas;
     private AnimationTimer timer;
-    private final Set<KeyCode> pressedKeys = new HashSet<>();
+//    private final Set<KeyCode> pressedKeys = new HashSet<>();
 
     private GameStartMenuController startGameCntroller;
 

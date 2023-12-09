@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LoadJsonData {
     Image playerImage = new Image(getClass().getResourceAsStream("/lab/mario-cropped.gif"));
@@ -122,6 +123,12 @@ public class LoadJsonData {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<DrawableUpdatable> getHammers(List<DrawableUpdatable> objs) {
+        return objs.stream()
+                .filter(obj -> obj instanceof Hammer)
+                .collect(Collectors.toList());
     }
 
     // Helper method to extract double values from JSON

@@ -18,9 +18,10 @@ public class Game {
     private final double width;
     private final double height;
     private boolean restartGameAllowed = false;
-    private Set<KeyCode> pressedKeys;
+//    private Set<KeyCode> pressedKeys;
 
     private List<DrawableUpdatable> objects;
+    private List<DrawableUpdatable> allHammer;
     private LoadJsonData loadJsonData = null;
 
     private GameListener gameListener = new EmptyGameListener();
@@ -34,6 +35,8 @@ public class Game {
         //load objects for current LEVEL FROM JSON FILE
         this.loadJsonData = new LoadJsonData(this);
         objects = this.loadJsonData.loadLevel(LEVEL_NUMBER);
+
+        allHammer = new ArrayList<>(objects); // hammers
 
         this.width = width;
         this.height = height;

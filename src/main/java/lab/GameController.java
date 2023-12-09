@@ -49,7 +49,7 @@ public class GameController {
                 stopGame();
                 enemySpawnTimer.stop();
                 GameController.this.switchScene("GameWinMenu.fxml", true);
-                System.out.println("You passed a level BRO");
+                System.out.println("You passed Level");
                 SaveLoadFile.saveScores("PLAYER", scorePlayer);
             }
 
