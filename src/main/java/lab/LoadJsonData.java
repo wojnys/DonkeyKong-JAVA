@@ -25,12 +25,13 @@ public class LoadJsonData {
 
     private Game game;
     private final List<DrawableUpdatable> objects = new ArrayList<DrawableUpdatable>();
+
     public LoadJsonData(Game game) {
         this.game = game;
     }
 
     public List<DrawableUpdatable> loadLevel(int level) {
-        String strJson = JsonParserHelper.getJSONFromFile("level"+level+".json");
+        String strJson = JsonParserHelper.getJSONFromFile("level" + level + ".json");
         try {
 
             // Parse the JSON string
@@ -47,7 +48,6 @@ public class LoadJsonData {
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                     System.out.println("  Object " + (i + 1));
-
 
                     DrawableUpdatable drawableUpdatable = this.createDrawableUpdatableObject(objectType, jsonObject);
                     if (drawableUpdatable != null) {
@@ -69,6 +69,7 @@ public class LoadJsonData {
 
         return objects;
     }
+
     public DrawableUpdatable createDrawableUpdatableObject(String objectType, JSONObject jsonObject) {
         switch (objectType) {
             case "player":
@@ -101,7 +102,8 @@ public class LoadJsonData {
 
             // Create an instance using the constructor
             return constructor.newInstance(game, position, size, velocity, image);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             // Handle the exception, e.g., log an error
             e.printStackTrace();
             return null;
@@ -118,7 +120,8 @@ public class LoadJsonData {
 
             // Create an instance using the constructor
             return constructor.newInstance(position, size, image);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             // Handle the exception, e.g., log an error
             e.printStackTrace();
             return null;

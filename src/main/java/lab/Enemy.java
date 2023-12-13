@@ -32,7 +32,7 @@ public class Enemy extends Human implements LadderCollisionable, BarrelCollision
         }
     }
 
-    public void choseRandomLadder() { // this will generate random number betwenn 0 - 3 when number is 1 so enemy can go down by ladder
+    public void choseRandomLadder() { // When number is 1 so enemy can go down by ladder
         if (counter <= 1) {
             Random rand = new Random();
             int num = rand.nextInt(0, 2);
